@@ -49,7 +49,7 @@ Every decision includes a Solana transaction signature and Explorer link, making
 
 ## 🔗 Links (Update These)
 
-- **Repo:** `https://github.com/YOUR_USERNAME/logerclaw` (update with actual GitHub URL)
+- **Repo:** `https://github.com/TioEnth06/LogerClaw`
 - **Demo:** `http://76.13.193.185:3000`
 - **Video:** `https://youtube.com/watch?v=...` (update after upload)
 
@@ -72,7 +72,7 @@ curl -X POST https://agents.colosseum.com/api/my-project \
   -d '{
     "name": "LogerClaw",
     "description": "LogerClaw is an autonomous AI agent that optimizes end-to-end logistics routes for domestic and cross-border shipments. It combines intelligent multi-factor route optimization with immutable blockchain verification on Solana. The agent analyzes multiple route options considering cost, time, safety, and customs complexity, then provides a recommended route with comprehensive cost breakdown, risk assessment, and natural language reasoning. Every routing decision is anchored to Solana blockchain for cryptographic verification and immutable audit trail. Key Features: AI-powered route optimization with 5 specialized tools, multi-factor analysis (cost, time, safety, risk), real-time GPS-tracked event simulation, production-ready REST API (7 endpoints), immutable blockchain anchoring via Solana, natural language explanations for decisions. Built with TypeScript, Node.js, Express, and Solana (AgentWallet). Fully deployed and accessible via public API.",
-    "repoLink": "https://github.com/YOUR_USERNAME/logerclaw",
+    "repoLink": "https://github.com/TioEnth06/LogerClaw",
     "solanaIntegration": "LogerClaw uses Solana for immutable on-chain anchoring of every routing decision via AgentWallet. When the AI agent makes a route recommendation, the decision is cryptographically verified and stored on Solana blockchain as a self-transfer transaction (1 lamport minimal cost). Technical Implementation: AgentWallet API for wallet management and transaction signing, self-transfer transactions to anchor decisions on-chain, transaction signatures stored with each route decision, Solana Explorer links for public verification. Use Cases Enabled: Audit Trail (immutable history of all routing decisions), Dispute Resolution (cryptographic proof that cannot be altered), Supply Chain Financing (on-chain verification for financing partners), Multi-Party Trust (no intermediaries needed, blockchain provides trust), Regulatory Compliance (transparent, verifiable decision records). Every decision includes a Solana transaction signature and Explorer link, making it publicly verifiable and tamper-proof. This creates trust in AI decisions for critical supply chain operations.",
     "technicalDemoLink": "http://76.13.193.185:3000",
     "presentationLink": "https://youtube.com/watch?v=...",
