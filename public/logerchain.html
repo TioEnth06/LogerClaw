@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LogerChain - Decentralized logistics protocol on Solana">
+    <title>LogerChain - LogerClaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0e1a; --bg-secondary: #0f1420; --bg-tertiary: #151b2b; --bg-elevated: #1a1f2e;
+            --accent-primary: #00d9ff; --accent-secondary: #8b5cf6; --text-primary: #ffffff; --text-secondary: #94a3b8;
+            --success: #10b981; --border-subtle: rgba(255, 255, 255, 0.06); --border-default: rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5); --radius-md: 12px; --radius-xl: 20px;
+            --spacing-md: 16px; --spacing-lg: 24px; --spacing-xl: 32px; --spacing-2xl: 48px; --spacing-3xl: 64px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+            z-index: -1; pointer-events: none;
+        }
+        nav {
+            position: sticky; top: 0; z-index: 100; background: rgba(10, 14, 26, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle); padding: var(--spacing-md) 0;
+        }
+        .nav-container {
+            max-width: 1280px; margin: 0 auto; padding: 0 var(--spacing-lg);
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+        }
+        .nav-logo {
+            font-size: 1.5em; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            text-decoration: none; display: flex; align-items: center; gap: var(--spacing-sm);
+            position: absolute; left: var(--spacing-lg);
+        }
+        .nav-links { 
+            display: flex; gap: var(--spacing-lg); list-style: none; 
+            margin: 0 auto;
+        }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        .nav-links a:hover { color: var(--accent-primary); }
+        .container { max-width: 1000px; margin: 0 auto; padding: var(--spacing-2xl) var(--spacing-lg); }
+        .page-header { text-align: center; margin-bottom: var(--spacing-3xl); }
+        .page-header h1 {
+            font-size: 3em; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: var(--spacing-md); letter-spacing: -1.5px;
+        }
+        .page-header p { font-size: 1.125em; color: var(--text-secondary); }
+        .badge {
+            display: inline-block; padding: var(--spacing-sm) var(--spacing-md); background: rgba(139, 92, 246, 0.2);
+            border: 1px solid var(--accent-secondary); border-radius: 20px; font-size: 0.875em; font-weight: 600;
+            color: var(--accent-secondary); margin-left: var(--spacing-md);
+        }
+        .section-card {
+            background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl); box-shadow: var(--shadow-lg); margin-bottom: var(--spacing-xl);
+        }
+        .section-card h2 {
+            font-size: 2em; font-weight: 700; color: var(--text-primary); margin-bottom: var(--spacing-lg);
+            display: flex; align-items: center; gap: var(--spacing-md);
+        }
+        .section-card h2::before {
+            content: ''; width: 4px; height: 32px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary)); border-radius: 2px;
+        }
+        .section-card p { color: var(--text-secondary); font-size: 1.0625em; line-height: 1.8; margin-bottom: var(--spacing-md); }
+        .relationship-diagram {
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+            padding: var(--spacing-xl); margin: var(--spacing-lg) 0; text-align: center;
+        }
+        .relationship-diagram .flow {
+            display: flex; flex-direction: column; gap: var(--spacing-md); align-items: center;
+        }
+        .relationship-diagram .box {
+            background: var(--bg-elevated); border: 1px solid var(--accent-primary); border-radius: var(--radius-md);
+            padding: var(--spacing-lg); min-width: 200px; font-weight: 600; color: var(--accent-primary);
+        }
+        .relationship-diagram .arrow { color: var(--accent-primary); font-size: 1.5em; }
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+        .feature-card {
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+            padding: var(--spacing-lg); transition: all 0.2s ease;
+        }
+        .feature-card:hover {
+            border-color: var(--accent-primary); background: var(--bg-tertiary); transform: translateY(-2px);
+        }
+        .feature-card h3 {
+            color: var(--accent-primary); font-size: 1.25em; font-weight: 600; margin-bottom: var(--spacing-sm);
+        }
+        .feature-card p { color: var(--text-secondary); font-size: 0.9375em; line-height: 1.7; }
+        .coming-soon {
+            text-align: center; padding: var(--spacing-3xl); background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--accent-primary); border-radius: var(--radius-xl); margin-top: var(--spacing-3xl);
+        }
+        .coming-soon h2 { color: var(--accent-primary); margin-bottom: var(--spacing-md); }
+        .coming-soon p { color: var(--text-secondary); margin-bottom: var(--spacing-lg); }
+        footer {
+            border-top: 1px solid var(--border-subtle); padding: var(--spacing-2xl) 0; margin-top: var(--spacing-3xl);
+            text-align: center; color: var(--text-tertiary);
+        }
+        footer a { color: var(--accent-primary); text-decoration: none; }
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2em; }
+            .section-card { padding: var(--spacing-xl); }
+            .nav-links { display: none; }
+            .relationship-diagram .flow { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span>🦞</span><span>LogerClaw</span></a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/agent.html">AI Agent</a></li>
+                <li><a href="/tools.html">Tools</a></li>
+                <li><a href="/request-access.html">Request Access</a></li>
+                <li><a href="/logerchain.html">LogerChain</a></li>
+                <li><a href="/docs.html">Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>LogerChain<span class="badge">Coming Soon</span></h1>
+            <p>Decentralized logistics protocol on Solana</p>
+        </div>
+
+        <div class="section-card">
+            <h2>What is LogerChain?</h2>
+            <p>
+                LogerChain is a decentralized logistics protocol built on Solana blockchain. It enables on-chain logistics 
+                operations, creating a trustless infrastructure for the global supply chain.
+            </p>
+            <p>
+                While LogerClaw provides the AI intelligence layer for route optimization, LogerChain will provide the 
+                infrastructure layer for on-chain logistics operations, settlements, and governance.
+            </p>
+        </div>
+
+        <div class="section-card">
+            <h2>LogerClaw ↔ LogerChain Relationship</h2>
+            <div class="relationship-diagram">
+                <div class="flow">
+                    <div class="box">LogerClaw<br>(AI Layer)</div>
+                    <div class="arrow">↓</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875em;">Route Decisions</div>
+                    <div class="arrow">↓</div>
+                    <div class="box">LogerChain<br>(Infrastructure)</div>
+                    <div class="arrow">↓</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875em;">On-chain Operations</div>
+                </div>
+            </div>
+            <p style="margin-top: var(--spacing-lg);">
+                LogerClaw makes intelligent routing decisions using AI, and LogerChain provides the blockchain infrastructure 
+                to execute, verify, and settle these decisions on-chain.
+            </p>
+        </div>
+
+        <div class="section-card">
+            <h2>Future Features</h2>
+            <p>LogerChain will enable the following capabilities:</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>💎 On-chain Escrow</h3>
+                    <p>Secure payment for logistics services held in smart contracts until delivery confirmation.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎫 Route NFT</h3>
+                    <p>Immutable route certificates as NFTs, providing proof of logistics decisions and execution.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💰 Settlement</h3>
+                    <p>Automated payment settlement upon delivery confirmation, reducing disputes and delays.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🤝 Multi-party Trust</h3>
+                    <p>No intermediaries needed - blockchain provides trust between shippers, forwarders, and carriers.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🏛️ Governance</h3>
+                    <p>Community-driven protocol upgrades and decision-making through on-chain governance.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Analytics</h3>
+                    <p>On-chain analytics and insights for logistics operations, transparent and verifiable.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>Why This Matters</h2>
+            <p>
+                LogerChain transforms logistics from a centralized, opaque industry into a decentralized, transparent ecosystem. 
+                By combining AI intelligence (LogerClaw) with blockchain infrastructure (LogerChain), we create:
+            </p>
+            <ul style="list-style: none; padding: 0; margin: var(--spacing-lg) 0;">
+                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary); padding-left: var(--spacing-xl); position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--accent-primary);">→</span>
+                    <strong style="color: var(--text-primary);">Trustless Operations:</strong> No need for intermediaries or centralized authorities
+                </li>
+                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary); padding-left: var(--spacing-xl); position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--accent-primary);">→</span>
+                    <strong style="color: var(--text-primary);">Transparent Settlements:</strong> All transactions verifiable on-chain
+                </li>
+                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary); padding-left: var(--spacing-xl); position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--accent-primary);">→</span>
+                    <strong style="color: var(--text-primary);">Reduced Costs:</strong> Eliminate middlemen and reduce fees
+                </li>
+                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary); padding-left: var(--spacing-xl); position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--accent-primary);">→</span>
+                    <strong style="color: var(--text-primary);">Global Access:</strong> Anyone can participate in the logistics network
+                </li>
+            </ul>
+        </div>
+
+        <div class="coming-soon">
+            <h2>🚀 Coming Soon</h2>
+            <p>
+                LogerChain is currently in development. We're building the infrastructure layer that will power the future 
+                of decentralized logistics.
+            </p>
+            <p style="margin-top: var(--spacing-md);">
+                Interested in building on LogerChain? <a href="/request-access.html" style="color: var(--accent-primary); font-weight: 600;">Request early access</a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Built with 🦞 by LogerChain Team | <a href="/">Home</a> | <a href="/about.html">About</a></p>
+            <p style="margin-top: var(--spacing-sm); font-size: 0.875em;">© 2026 LogerClaw. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

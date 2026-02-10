@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LogerClaw Documentation - AI-powered logistics optimization">
+    <title>Documentation - LogerClaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0e1a; --bg-secondary: #0f1420; --bg-tertiary: #151b2b; --bg-elevated: #1a1f2e;
+            --accent-primary: #00d9ff; --accent-secondary: #8b5cf6; --text-primary: #ffffff; --text-secondary: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.06); --border-default: rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5); --radius-md: 12px; --radius-xl: 20px;
+            --spacing-md: 16px; --spacing-lg: 24px; --spacing-xl: 32px; --spacing-2xl: 48px; --spacing-3xl: 64px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+            z-index: -1; pointer-events: none;
+        }
+        nav {
+            position: sticky; top: 0; z-index: 100; background: rgba(10, 14, 26, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle); padding: var(--spacing-md) 0;
+        }
+        .nav-container {
+            max-width: 1280px; margin: 0 auto; padding: 0 var(--spacing-lg);
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+        }
+        .nav-logo {
+            font-size: 1.5em; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            text-decoration: none; display: flex; align-items: center; gap: var(--spacing-sm);
+            position: absolute; left: var(--spacing-lg);
+        }
+        .nav-links { 
+            display: flex; gap: var(--spacing-lg); list-style: none;
+            margin: 0 auto;
+        }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+        .nav-links a:hover { color: var(--accent-primary); }
+        .container { max-width: 1000px; margin: 0 auto; padding: var(--spacing-2xl) var(--spacing-lg); }
+        .page-header { text-align: center; margin-bottom: var(--spacing-3xl); }
+        .page-header h1 {
+            font-size: 3em; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: var(--spacing-md); letter-spacing: -1.5px;
+        }
+        .page-header p { font-size: 1.125em; color: var(--text-secondary); }
+        .doc-section {
+            background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl); box-shadow: var(--shadow-lg); margin-bottom: var(--spacing-xl);
+        }
+        .doc-section h2 {
+            font-size: 2em; font-weight: 700; color: var(--text-primary); margin-bottom: var(--spacing-lg);
+            display: flex; align-items: center; gap: var(--spacing-md);
+        }
+        .doc-section h2::before {
+            content: ''; width: 4px; height: 32px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary)); border-radius: 2px;
+        }
+        .doc-section h3 { font-size: 1.5em; font-weight: 600; color: var(--accent-primary); margin: var(--spacing-lg) 0 var(--spacing-md); }
+        .doc-section p { color: var(--text-secondary); font-size: 1.0625em; line-height: 1.8; margin-bottom: var(--spacing-md); }
+        .doc-section ul { list-style: none; padding: 0; margin: var(--spacing-lg) 0; }
+        .doc-section li {
+            padding: var(--spacing-sm) 0; color: var(--text-secondary); padding-left: var(--spacing-xl); position: relative;
+            line-height: 1.8;
+        }
+        .doc-section li::before { content: '•'; position: absolute; left: 0; color: var(--accent-primary); font-weight: 600; }
+        code {
+            background: var(--bg-secondary); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-md);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.875em; color: var(--accent-primary);
+            border: 1px solid var(--border-subtle);
+        }
+        .code-block {
+            background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+            padding: var(--spacing-lg); margin: var(--spacing-lg) 0; overflow-x: auto;
+        }
+        .code-block code { background: none; padding: 0; border: none; color: var(--text-secondary); display: block; white-space: pre; }
+        footer {
+            border-top: 1px solid var(--border-subtle); padding: var(--spacing-2xl) 0; margin-top: var(--spacing-3xl);
+            text-align: center; color: var(--text-tertiary);
+        }
+        footer a { color: var(--accent-primary); text-decoration: none; }
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2em; }
+            .doc-section { padding: var(--spacing-xl); }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span>🦞</span><span>LogerClaw</span></a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/agent.html">AI Agent</a></li>
+                <li><a href="/tools.html">Tools</a></li>
+                <li><a href="/request-access.html">Request Access</a></li>
+                <li><a href="/logerchain.html">LogerChain</a></li>
+                <li><a href="/docs.html">Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Documentation</h1>
+            <p>Learn how LogerClaw works and how to use it</p>
+        </div>
+
+        <div class="doc-section">
+            <h2>What is LogerClaw?</h2>
+            <p>
+                LogerClaw is an autonomous AI agent that optimizes end-to-end logistics routes for domestic and cross-border shipments. 
+                It combines intelligent multi-factor route optimization with immutable blockchain verification on Solana.
+            </p>
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>AI Decision-Making:</strong> Multi-factor route optimization (cost, time, safety, risk)</li>
+                <li><strong>Blockchain Anchoring:</strong> Immutable on-chain proof via Solana</li>
+                <li><strong>Production-Ready API:</strong> REST endpoints for seamless integration</li>
+                <li><strong>Real-Time Simulation:</strong> GPS-tracked event generation</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>How AI Agent Works</h2>
+            <h3>Architecture</h3>
+            <p>
+                LogerClaw uses a tool-based architecture where specialized tools work together to make intelligent routing decisions.
+            </p>
+            <h3>Tool-Based Design</h3>
+            <div class="code-block">
+                <code>User Request
+    ↓
+generate_routes → 3+ route options
+    ↓
+calculate_cost → Cost for each route
+    ↓
+evaluate_risk → Risk for each route
+    ↓
+Agent Scoring & Ranking
+    ↓
+generate_explanation → Natural language reasoning
+    ↓
+(Optional) Blockchain Anchoring
+    ↓
+Response with recommended route</code>
+            </div>
+            <h3>Decision Flow</h3>
+            <ul>
+                <li>Agent receives shipment request (origin, destination, cargo details)</li>
+                <li>Generates multiple route options using specialized tools</li>
+                <li>Calculates cost, time, and risk for each route</li>
+                <li>Scores and ranks routes based on user preferences</li>
+                <li>Generates natural language explanation</li>
+                <li>Optionally anchors decision to Solana blockchain</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>Tool Overview</h2>
+            <h3>1. Route Generation</h3>
+            <p>Generates multiple realistic route options (air, sea, truck, rail) with detailed logistics sequences.</p>
+            <h3>2. Cost Calculation</h3>
+            <p>Calculates comprehensive costs including shipping, fuel, customs, insurance, and warehousing.</p>
+            <h3>3. Risk Assessment</h3>
+            <p>Evaluates safety scores, delay probability, and customs complexity for each route.</p>
+            <h3>4. Event Simulation</h3>
+            <p>Generates realistic logistics events with GPS coordinates for tracking.</p>
+            <h3>5. Explanation Generation</h3>
+            <p>Creates natural language explanations for routing decisions.</p>
+        </div>
+
+        <div class="doc-section">
+            <h2>API Overview</h2>
+            <p>
+                LogerClaw provides a REST API for programmatic access. All endpoints return JSON responses.
+            </p>
+            <h3>Base URL</h3>
+            <p><code>http://your-server:3000</code></p>
+            <h3>Main Endpoints</h3>
+            <ul>
+                <li><code>GET /health</code> - Health check</li>
+                <li><code>POST /api/v1/decide</code> - Optimize route (main endpoint)</li>
+                <li><code>POST /api/v1/tools/generate-routes</code> - Generate route options</li>
+                <li><code>POST /api/v1/tools/calculate-cost</code> - Calculate cost breakdown</li>
+                <li><code>POST /api/v1/tools/evaluate-risk</code> - Assess risks</li>
+                <li><code>POST /api/v1/tools/simulate-events</code> - Generate GPS events</li>
+            </ul>
+            <h3>Integration Example</h3>
+            <div class="code-block">
+                <code>const response = await fetch('http://server:3000/api/v1/decide', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    origin: { city: 'Shanghai', country: 'China', countryCode: 'CN' },
+    destination: { city: 'Los Angeles', country: 'United States', countryCode: 'US' },
+    cargo: { weight: 500, volume: 2, value: 25000, type: 'electronics' },
+    preferences: { priority: 'balanced', anchorToBlockchain: true }
+  })
+});
+
+const { data } = await response.json();
+console.log(data.recommended_route);</code>
+            </div>
+            <p style="margin-top: var(--spacing-lg);">
+                For complete API documentation, see the <code>API-DOCUMENTATION.md</code> file in the repository.
+            </p>
+        </div>
+
+        <div class="doc-section">
+            <h2>Blockchain Integration</h2>
+            <p>
+                LogerClaw uses Solana blockchain to anchor routing decisions, providing immutable verification and audit trails.
+            </p>
+            <h3>How It Works</h3>
+            <ul>
+                <li>Route decision is generated by AI agent</li>
+                <li>Decision hash is created (SHA-256)</li>
+                <li>Transaction is posted to Solana devnet</li>
+                <li>Signature and explorer link are returned</li>
+                <li>Anyone can verify decision on Solana Explorer</li>
+            </ul>
+            <h3>Use Cases</h3>
+            <ul>
+                <li><strong>Audit Trail:</strong> Immutable history of all routing decisions</li>
+                <li><strong>Dispute Resolution:</strong> Cryptographic proof that cannot be altered</li>
+                <li><strong>Supply Chain Financing:</strong> On-chain verification for financing partners</li>
+                <li><strong>Multi-Party Trust:</strong> No intermediaries needed</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Built with 🦞 by LogerChain Team | <a href="/">Home</a> | <a href="/about.html">About</a></p>
+            <p style="margin-top: var(--spacing-sm); font-size: 0.875em;">© 2026 LogerClaw. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

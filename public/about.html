@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About LogerClaw - AI-powered logistics intelligence with blockchain verification">
+    <title>About - LogerClaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1420;
+            --bg-tertiary: #151b2b;
+            --bg-elevated: #1a1f2e;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #8b5cf6;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-default: rgba(255, 255, 255, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+            --radius-md: 12px;
+            --radius-xl: 20px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--spacing-md) 0;
+        }
+        
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .nav-logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            position: absolute;
+            left: var(--spacing-lg);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+            margin: 0 auto;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+        
+        .page-header h1 {
+            font-size: 3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: -1.5px;
+        }
+        
+        .page-header p {
+            font-size: 1.125em;
+            color: var(--text-secondary);
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: var(--spacing-3xl);
+        }
+        
+        .section-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .section-card h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .section-card h2::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+        }
+        
+        .section-card p {
+            color: var(--text-secondary);
+            font-size: 1.0625em;
+            line-height: 1.8;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .section-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: var(--spacing-lg);
+        }
+        
+        .section-card li {
+            padding: var(--spacing-sm) 0;
+            color: var(--text-secondary);
+            padding-left: var(--spacing-xl);
+            position: relative;
+            line-height: 1.8;
+        }
+        
+        .section-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .highlight-box strong {
+            color: var(--accent-primary);
+            display: block;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: var(--spacing-2xl) 0;
+            margin-top: var(--spacing-3xl);
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+        
+        footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2em;
+            }
+            
+            .section-card {
+                padding: var(--spacing-xl);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span>🦞</span>
+                <span>LogerClaw</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/agent.html">AI Agent</a></li>
+                <li><a href="/tools.html">Tools</a></li>
+                <li><a href="/request-access.html">Request Access</a></li>
+                <li><a href="/logerchain.html">LogerChain</a></li>
+                <li><a href="/docs.html">Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>About LogerClaw</h1>
+            <p>AI-powered logistics intelligence with blockchain verification</p>
+        </div>
+
+        <!-- Vision Section -->
+        <div class="section">
+            <div class="section-card">
+                <h2>Our Vision</h2>
+                <p>
+                    LogerClaw envisions a future where logistics operations are transparent, efficient, and trustworthy. 
+                    We combine artificial intelligence with blockchain technology to create an immutable, verifiable layer 
+                    for logistics decision-making.
+                </p>
+                <ul>
+                    <li><strong>Transparency:</strong> Every decision is verifiable and auditable</li>
+                    <li><strong>Efficiency:</strong> AI-powered optimization reduces costs by 15-30%</li>
+                    <li><strong>Trust:</strong> Blockchain verification eliminates disputes</li>
+                    <li><strong>Decentralization:</strong> Enable decentralized logistics operations without intermediaries</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- AI + Blockchain Section -->
+        <div class="section">
+            <div class="section-card">
+                <h2>Why AI + Blockchain?</h2>
+                
+                <div class="highlight-box">
+                    <strong>🤖 Why AI?</strong>
+                    <p>
+                        Artificial intelligence enables intelligent, multi-factor decision-making that considers cost, time, 
+                        safety, and risk simultaneously. AI agents can analyze thousands of route combinations in seconds, 
+                        something impossible for human planners to do manually.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>⛓️ Why Blockchain?</strong>
+                    <p>
+                        Blockchain provides immutable verification and audit trails. Every routing decision is cryptographically 
+                        anchored, making it tamper-proof and publicly verifiable. This creates trust without requiring centralized 
+                        authorities or intermediaries.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>🚀 Why Together?</strong>
+                    <p>
+                        AI makes intelligent decisions, blockchain makes them trustworthy. Together, they create a transparent, 
+                        efficient, and verifiable logistics intelligence layer that benefits shippers, forwarders, and the entire 
+                        supply chain ecosystem.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Context Section -->
+        <div class="section">
+            <div class="section-card">
+                <h2>Project Context</h2>
+                <p>
+                    LogerClaw was built for the <strong>Colosseum Agent Hackathon</strong>, demonstrating how AI agents can 
+                    be enhanced with blockchain verification for real-world logistics applications.
+                </p>
+                <ul>
+                    <li><strong>Built for:</strong> Colosseum Agent Hackathon 2026</li>
+                    <li><strong>Technology:</strong> TypeScript, Node.js, Express, Solana (AgentWallet)</li>
+                    <li><strong>Future Vision:</strong> LogerChain protocol - decentralized logistics infrastructure</li>
+                    <li><strong>Open to:</strong> Partnerships, integrations, and collaborations</li>
+                </ul>
+                <p style="margin-top: var(--spacing-lg);">
+                    We're building the foundation for a decentralized logistics ecosystem where AI-powered decisions are 
+                    transparent, verifiable, and trusted by all parties.
+                </p>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="section" style="text-align: center;">
+            <div class="section-card">
+                <h2 style="justify-content: center;">Get Involved</h2>
+                <p>
+                    Interested in using LogerClaw for your logistics operations? Want to build on the LogerChain protocol? 
+                    Or simply want to learn more?
+                </p>
+                <div style="margin-top: var(--spacing-xl); display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                    <a href="/request-access.html" style="padding: var(--spacing-md) var(--spacing-xl); background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; text-decoration: none; border-radius: var(--radius-md); font-weight: 600; transition: transform 0.2s ease;">Request Access</a>
+                    <a href="/logerchain.html" style="padding: var(--spacing-md) var(--spacing-xl); background: var(--bg-secondary); color: var(--text-primary); text-decoration: none; border: 1px solid var(--border-default); border-radius: var(--radius-md); font-weight: 600; transition: all 0.2s ease;">Learn About LogerChain</a>
+                    <a href="/docs.html" style="padding: var(--spacing-md) var(--spacing-xl); background: var(--bg-secondary); color: var(--text-primary); text-decoration: none; border: 1px solid var(--border-default); border-radius: var(--radius-md); font-weight: 600; transition: all 0.2s ease;">Read Documentation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Built with 🦞 by LogerChain Team | <a href="/">Home</a> | <a href="/docs.html">Documentation</a></p>
+            <p style="margin-top: var(--spacing-sm); font-size: 0.875em;">© 2026 LogerClaw. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

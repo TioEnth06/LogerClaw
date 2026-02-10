@@ -1,0 +1,1883 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogerClaw - AI Logistics Optimization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1420;
+            --bg-tertiary: #151b2b;
+            --bg-elevated: #1a1f2e;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #ec4899;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-default: rgba(255, 255, 255, 0.1);
+            --border-strong: rgba(255, 255, 255, 0.15);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Animated Gradient Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+        
+        /* Floating Orbs Background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(0, 217, 255, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 30%);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+        
+        @keyframes floatOrb {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(5%, -5%) rotate(120deg);
+            }
+            66% {
+                transform: translate(-5%, 5%) rotate(240deg);
+            }
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header Section - Clean & Minimal */
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-xl);
+        }
+        
+        .logo {
+            font-size: 3.5em;
+            margin-bottom: var(--spacing-md);
+            display: inline-block;
+            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.3));
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: -1.5px;
+        }
+        
+        .header p {
+            font-size: 1.125em;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .header .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs) var(--spacing-md);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: 20px;
+            font-size: 0.875em;
+            font-weight: 500;
+            color: var(--accent-primary);
+        }
+        
+        /* Card Component - Glassmorphism Effect */
+        .card {
+            background: rgba(26, 31, 46, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--accent-primary), 
+                var(--accent-secondary),
+                transparent);
+            opacity: 0.6;
+        }
+        
+        .card:hover {
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 
+                0 24px 48px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(0, 217, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 3px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+        }
+        
+        /* Form Styles - Clean & Modern */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            font-size: 0.9375em;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        input:hover, select:hover, textarea:hover {
+            border-color: var(--border-default);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+            background: var(--bg-tertiary);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        small {
+            color: var(--text-tertiary);
+            font-size: 0.75em;
+            display: block;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        /* Button - Enhanced with Glassmorphism */
+        .btn {
+            position: relative;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 4px 14px rgba(0, 217, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            margin-top: var(--spacing-md);
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 24px rgba(0, 217, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #00e5ff, #9d4edd);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 8px rgba(0, 217, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn:disabled::before {
+            display: none;
+        }
+        
+        /* Loading Animation - Clean */
+        .loading {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            display: none;
+        }
+        
+        .spinner-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-lg);
+        }
+        
+        .spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--accent-primary);
+            border-right: 4px solid var(--accent-secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.5));
+        }
+        
+        .spinner::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--accent-tertiary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite reverse;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Pulse effect for loading */
+        .spinner-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, transparent 70%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+        
+        .loading-text {
+            font-size: 1em;
+            color: var(--text-secondary);
+        }
+        
+        /* Results Section */
+        .results {
+            display: none;
+            margin-top: var(--spacing-2xl);
+        }
+        
+        .route-card {
+            background: rgba(26, 31, 46, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .route-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .route-card:hover {
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 
+                0 8px 32px rgba(0, 217, 255, 0.1),
+                0 0 0 1px rgba(0, 217, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .route-card:hover::before {
+            opacity: 1;
+        }
+        
+        .route-card.recommended {
+            border: 2px solid var(--success);
+            background: linear-gradient(135deg, 
+                rgba(16, 185, 129, 0.1), 
+                rgba(0, 217, 255, 0.05),
+                rgba(139, 92, 246, 0.05));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 
+                0 20px 40px rgba(16, 185, 129, 0.2),
+                0 0 0 1px rgba(16, 185, 129, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 20px 40px rgba(16, 185, 129, 0.2),
+                    0 0 0 1px rgba(16, 185, 129, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 20px 40px rgba(16, 185, 129, 0.3),
+                    0 0 0 1px rgba(16, 185, 129, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            }
+        }
+        
+        .route-card h3 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .route-card.compact h3 {
+            font-size: 1.25em;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .route-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .route-summary-item {
+            text-align: center;
+            padding: var(--spacing-sm);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .route-summary-item .label {
+            font-size: 0.75em;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .route-summary-item .value {
+            font-size: 1.125em;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .route-name-compact {
+            font-size: 1.125em;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .priority-comparison {
+            background: rgba(26, 31, 46, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .priority-comparison h3 {
+            font-size: 1.25em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+        
+        .priority-card {
+            background: rgba(15, 20, 32, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .priority-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .priority-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(21, 27, 43, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 16px rgba(139, 92, 246, 0.2),
+                0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+        
+        .priority-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .priority-card h4 {
+            font-size: 0.875em;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .priority-card .route-name {
+            font-size: 0.9375em;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .priority-card .metrics {
+            font-size: 0.8125em;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
+        }
+        
+        .reasoning-compact {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-md);
+            border-left: 3px solid var(--accent-primary);
+            font-size: 0.9375em;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        .reasoning-compact strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.875em;
+        }
+        
+        /* Route Details Expandable */
+        .route-details-toggle {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: var(--radius-md);
+            color: var(--accent-primary);
+            cursor: pointer;
+            font-size: 0.875em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        .route-details-toggle:hover {
+            background: rgba(0, 217, 255, 0.15);
+            border-color: rgba(0, 217, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .route-details-toggle .icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .route-details-toggle.expanded .icon {
+            transform: rotate(180deg);
+        }
+        
+        .route-details-expanded {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0;
+        }
+        
+        .route-details-expanded.show {
+            max-height: 2000px;
+            padding: var(--spacing-lg) 0;
+        }
+        
+        .route-detail-section {
+            background: rgba(15, 20, 32, 0.5);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .route-detail-section h4 {
+            font-size: 0.9375em;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .route-sequence {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .route-leg {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: rgba(0, 217, 255, 0.05);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .route-leg-icon {
+            font-size: 1.5em;
+            width: 32px;
+            text-align: center;
+        }
+        
+        .route-leg-info {
+            flex: 1;
+        }
+        
+        .route-leg-info .leg-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9375em;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .route-leg-info .leg-details {
+            font-size: 0.8125em;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .cost-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-sm);
+        }
+        
+        .cost-item {
+            padding: var(--spacing-sm);
+            background: rgba(0, 217, 255, 0.05);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+        }
+        
+        .cost-item .label {
+            font-size: 0.75em;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .cost-item .value {
+            font-size: 0.9375em;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .risk-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-sm);
+        }
+        
+        .risk-item {
+            padding: var(--spacing-sm);
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+        
+        .risk-item .label {
+            font-size: 0.75em;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .risk-item .value {
+            font-size: 0.9375em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .risk-item .value.score {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .full-reasoning {
+            background: rgba(236, 72, 153, 0.05);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--accent-tertiary);
+            font-size: 0.9375em;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        .full-reasoning strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge.success {
+            background: var(--success);
+            color: white;
+        }
+        
+        /* Stats Grid - Clean Layout */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+        
+        .stat:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8125em;
+            margin-top: var(--spacing-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Route Details */
+        .route-details {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .route-details h4 {
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .route-details ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .route-details li {
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+        }
+        
+        .route-details li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Reasoning Box */
+        .reasoning {
+            background: var(--bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-lg);
+            border-left: 3px solid var(--accent-primary);
+            white-space: pre-wrap;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        
+        .reasoning strong {
+            color: var(--text-primary);
+            font-size: 1em;
+            display: block;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        /* Blockchain Proof */
+        .blockchain-proof {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .blockchain-proof h4 {
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.125em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .blockchain-proof p {
+            margin: var(--spacing-sm) 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.9375em;
+        }
+        
+        .blockchain-proof strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .blockchain-proof code {
+            background: var(--bg-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125em;
+            color: var(--accent-primary);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .blockchain-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: var(--spacing-md);
+        }
+        
+        .blockchain-link:hover {
+            background: rgba(0, 217, 255, 0.15);
+            transform: translateX(2px);
+        }
+        
+        /* Alternative Routes */
+        .alternatives-section {
+            margin-top: var(--spacing-2xl);
+        }
+        
+        .alternatives-section h3 {
+            font-size: 1.5em;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .alt-route {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            transition: all 0.2s ease;
+        }
+        
+        .alt-route:hover {
+            border-color: var(--accent-secondary);
+            background: var(--bg-tertiary);
+            transform: translateX(4px);
+        }
+        
+        .alt-route h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .alt-route p {
+            color: var(--text-secondary);
+            font-size: 0.875em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+            
+            .card {
+                padding: var(--spacing-lg);
+            }
+            
+            .row {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-default);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-strong);
+        }
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--spacing-md) 0;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .nav-logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            position: absolute;
+            left: var(--spacing-lg);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+            margin: 0 auto;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span>🦞</span>
+                <span>LogerClaw</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/agent.html">AI Agent</a></li>
+                <li><a href="/tools.html">Tools</a></li>
+                <li><a href="/request-access.html">Request Access</a></li>
+                <li><a href="/logerchain.html">LogerChain</a></li>
+                <li><a href="/docs.html">Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">🦞</div>
+            <h1>LogerClaw</h1>
+            <p>AI-Powered Logistics Optimization with Blockchain Verification</p>
+            <div class="tag">⛓️ Powered by Solana</div>
+        </div>
+
+        <div class="card">
+            <form id="routeForm">
+                <h2 class="section-title">📦 Shipment Details</h2>
+                
+                <div class="row">
+                    <div class="form-group">
+                        <label>Origin City</label>
+                        <input type="text" id="originCity" value="Shanghai" required placeholder="e.g., Shanghai">
+                    </div>
+                    <div class="form-group">
+                        <label>Origin Country</label>
+                        <input type="text" id="originCountry" value="China" required placeholder="e.g., China">
+                    </div>
+                    <div class="form-group">
+                        <label>Origin Code</label>
+                        <input type="text" id="originCode" value="CN" required placeholder="Auto-filled from country">
+                        <small style="color: var(--text-tertiary); font-size: 0.75em; display: block; margin-top: var(--spacing-xs);">Auto-filled when you enter country name (can be edited)</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Destination City</label>
+                        <input type="text" id="destCity" value="Los Angeles" required placeholder="e.g., Los Angeles">
+                    </div>
+                    <div class="form-group">
+                        <label>Destination Country</label>
+                        <input type="text" id="destCountry" value="United States" required placeholder="e.g., United States">
+                    </div>
+                    <div class="form-group">
+                        <label>Destination Code</label>
+                        <input type="text" id="destCode" value="US" required placeholder="Auto-filled from country">
+                        <small style="color: var(--text-tertiary); font-size: 0.75em; display: block; margin-top: var(--spacing-xs);">Auto-filled when you enter country name (can be edited)</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="weight" value="500" required placeholder="e.g., 500">
+                    </div>
+                    <div class="form-group">
+                        <label>Volume (m³)</label>
+                        <input type="number" id="volume" value="2" step="0.1" placeholder="e.g., 2.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Value (USD)</label>
+                        <input type="number" id="value" value="25000" placeholder="e.g., 25000">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Cargo Type</label>
+                        <select id="cargoType">
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing & Textiles</option>
+                            <option value="food">Food & Beverages</option>
+                            <option value="pharmaceuticals">Pharmaceuticals</option>
+                            <option value="machinery">Machinery & Equipment</option>
+                            <option value="automotive">Automotive Parts</option>
+                            <option value="chemicals">Chemicals</option>
+                            <option value="furniture">Furniture</option>
+                            <option value="raw-materials">Raw Materials</option>
+                            <option value="perishables">Perishables</option>
+                            <option value="hazardous">Hazardous Materials</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="priority">
+                            <option value="balanced">Balanced (Recommended)</option>
+                            <option value="cost">Cost Optimized</option>
+                            <option value="time">Time Critical</option>
+                            <option value="safety">Safety First</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Blockchain Anchoring</label>
+                        <select id="blockchain">
+                            <option value="false">Disabled</option>
+                            <option value="true" selected>Enabled (Recommended)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.25em; font-weight: 600; color: var(--text-primary); margin: var(--spacing-xl) 0 var(--spacing-md); display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <span>⚙️</span>
+                    <span>Advanced Options</span>
+                </h3>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Delivery Deadline (Days)</label>
+                        <input type="number" id="deadline" min="1" max="365" placeholder="e.g., 7 (optional)">
+                        <small style="color: var(--text-tertiary); font-size: 0.75em; display: block; margin-top: var(--spacing-xs);">Leave empty for no deadline</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Budget Limit (USD)</label>
+                        <input type="number" id="budget" min="0" placeholder="e.g., 10000 (optional)">
+                        <small style="color: var(--text-tertiary); font-size: 0.75em; display: block; margin-top: var(--spacing-xs);">Maximum cost constraint</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Temperature Control</label>
+                        <select id="temperature">
+                            <option value="none">Not Required</option>
+                            <option value="frozen">Frozen (-18°C)</option>
+                            <option value="refrigerated">Refrigerated (2-8°C)</option>
+                            <option value="cool">Cool (8-15°C)</option>
+                            <option value="ambient">Ambient (15-25°C)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Packaging Type</label>
+                        <select id="packaging">
+                            <option value="standard">Standard</option>
+                            <option value="palletized">Palletized</option>
+                            <option value="containerized">Containerized</option>
+                            <option value="bulk">Bulk</option>
+                            <option value="fragile">Fragile (Extra Care)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Insurance Required</label>
+                        <select id="insurance">
+                            <option value="none">Not Required</option>
+                            <option value="basic">Basic Coverage</option>
+                            <option value="full">Full Coverage</option>
+                            <option value="premium">Premium Coverage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Requirements</label>
+                        <input type="text" id="specialRequirements" placeholder="e.g., Customs pre-clearance, Express handling">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: var(--spacing-lg);">
+                    <label>Additional Notes (Optional)</label>
+                    <textarea id="notes" rows="3" placeholder="Any additional information about your shipment..."></textarea>
+                </div>
+
+                <button type="submit" class="btn">🚀 Optimize Route</button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+                <p class="loading-text">Analyzing logistics options...</p>
+            </div>
+
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        // Country name to ISO code mapping
+        const countryCodeMap = {
+            // Major countries
+            'china': 'CN',
+            'united states': 'US',
+            'usa': 'US',
+            'united states of america': 'US',
+            'indonesia': 'ID',
+            'singapore': 'SG',
+            'malaysia': 'MY',
+            'thailand': 'TH',
+            'vietnam': 'VN',
+            'philippines': 'PH',
+            'japan': 'JP',
+            'south korea': 'KR',
+            'korea': 'KR',
+            'india': 'IN',
+            'australia': 'AU',
+            'new zealand': 'NZ',
+            'united kingdom': 'GB',
+            'uk': 'GB',
+            'great britain': 'GB',
+            'germany': 'DE',
+            'france': 'FR',
+            'italy': 'IT',
+            'spain': 'ES',
+            'netherlands': 'NL',
+            'belgium': 'BE',
+            'switzerland': 'CH',
+            'austria': 'AT',
+            'sweden': 'SE',
+            'norway': 'NO',
+            'denmark': 'DK',
+            'finland': 'FI',
+            'poland': 'PL',
+            'russia': 'RU',
+            'brazil': 'BR',
+            'mexico': 'MX',
+            'canada': 'CA',
+            'argentina': 'AR',
+            'chile': 'CL',
+            'south africa': 'ZA',
+            'egypt': 'EG',
+            'uae': 'AE',
+            'united arab emirates': 'AE',
+            'saudi arabia': 'SA',
+            'turkey': 'TR',
+            'israel': 'IL',
+            'hong kong': 'HK',
+            'taiwan': 'TW',
+            'bangladesh': 'BD',
+            'pakistan': 'PK',
+            'sri lanka': 'LK',
+            'myanmar': 'MM',
+            'cambodia': 'KH',
+            'laos': 'LA',
+            'brunei': 'BN',
+            'portugal': 'PT',
+            'greece': 'GR',
+            'ireland': 'IE',
+            'czech republic': 'CZ',
+            'romania': 'RO',
+            'hungary': 'HU',
+            'ukraine': 'UA',
+            'colombia': 'CO',
+            'peru': 'PE',
+            'venezuela': 'VE',
+            'ecuador': 'EC',
+            'chile': 'CL',
+            'uruguay': 'UY',
+            'paraguay': 'PY',
+            'bolivia': 'BO',
+            'kenya': 'KE',
+            'nigeria': 'NG',
+            'ghana': 'GH',
+            'morocco': 'MA',
+            'tunisia': 'TN',
+            'algeria': 'DZ',
+            'qatar': 'QA',
+            'kuwait': 'KW',
+            'oman': 'OM',
+            'bahrain': 'BH',
+            'jordan': 'JO',
+            'lebanon': 'LB',
+            'iran': 'IR',
+            'iraq': 'IQ'
+        };
+
+        // Function to get country code from country name
+        function getCountryCode(countryName) {
+            if (!countryName) return '';
+            
+            const normalized = countryName.trim().toLowerCase();
+            
+            // Direct match
+            if (countryCodeMap[normalized]) {
+                return countryCodeMap[normalized];
+            }
+            
+            // Remove "the" prefix
+            const withoutThe = normalized.replace(/^the\s+/, '');
+            if (countryCodeMap[withoutThe]) {
+                return countryCodeMap[withoutThe];
+            }
+            
+            // Try partial match (for common variations)
+            for (const [key, code] of Object.entries(countryCodeMap)) {
+                if (normalized.includes(key) || key.includes(normalized)) {
+                    return code;
+                }
+            }
+            
+            return '';
+        }
+
+        // Auto-fill country codes
+        function setupCountryCodeAutoFill() {
+            const originCountryInput = document.getElementById('originCountry');
+            const originCodeInput = document.getElementById('originCode');
+            const destCountryInput = document.getElementById('destCountry');
+            const destCodeInput = document.getElementById('destCode');
+
+            // Origin country auto-fill
+            originCountryInput.addEventListener('blur', function() {
+                const code = getCountryCode(this.value);
+                if (code) {
+                    originCodeInput.value = code;
+                    originCodeInput.style.borderColor = 'var(--success)';
+                    setTimeout(() => {
+                        originCodeInput.style.borderColor = '';
+                    }, 1000);
+                }
+            });
+
+            // Destination country auto-fill
+            destCountryInput.addEventListener('blur', function() {
+                const code = getCountryCode(this.value);
+                if (code) {
+                    destCodeInput.value = code;
+                    destCodeInput.style.borderColor = 'var(--success)';
+                    setTimeout(() => {
+                        destCodeInput.style.borderColor = '';
+                    }, 1000);
+                }
+            });
+
+            // Also trigger on Enter key
+            originCountryInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.blur();
+                }
+            });
+
+            destCountryInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.blur();
+                }
+            });
+        }
+
+        // Initialize auto-fill (run immediately since script is at end of body)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupCountryCodeAutoFill);
+        } else {
+            setupCountryCodeAutoFill();
+        }
+
+        document.getElementById('routeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+
+            // Prepare request
+            const deadlineValue = document.getElementById('deadline').value;
+            const budgetValue = document.getElementById('budget').value;
+            
+            const payload = {
+                origin: {
+                    city: document.getElementById('originCity').value,
+                    country: document.getElementById('originCountry').value,
+                    countryCode: document.getElementById('originCode').value
+                },
+                destination: {
+                    city: document.getElementById('destCity').value,
+                    country: document.getElementById('destCountry').value,
+                    countryCode: document.getElementById('destCode').value
+                },
+                cargo: {
+                    weight: parseFloat(document.getElementById('weight').value),
+                    volume: parseFloat(document.getElementById('volume').value) || undefined,
+                    value: parseFloat(document.getElementById('value').value) || undefined,
+                    type: document.getElementById('cargoType').value,
+                    packaging: document.getElementById('packaging').value,
+                    temperatureControl: document.getElementById('temperature').value,
+                    insurance: document.getElementById('insurance').value
+                },
+                preferences: {
+                    priority: document.getElementById('priority').value,
+                    anchorToBlockchain: document.getElementById('blockchain').value === 'true',
+                    deadlineDays: deadlineValue ? parseInt(deadlineValue) : undefined,
+                    budgetLimit: budgetValue ? parseFloat(budgetValue) : undefined,
+                    specialRequirements: document.getElementById('specialRequirements').value || undefined,
+                    notes: document.getElementById('notes').value || undefined
+                }
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/v1/decide`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayResults(result.data);
+                } else {
+                    alert('Error: ' + (result.error?.message || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Failed to connect to API: ' + error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            const route = data.recommended_route;
+            const cost = data.cost_analysis;
+            const risk = data.risk_analysis;
+            const selectedPriority = document.getElementById('priority').value;
+
+            // Recommended Route - Compact Version
+            let html = `
+                <div class="route-card recommended compact">
+                    <h3>🏆 Recommended Route <span class="badge success">SELECTED</span></h3>
+                    
+                    <div class="route-name-compact">${route.route_name}</div>
+                    
+                    <div class="route-summary">
+                        <div class="route-summary-item">
+                            <div class="label">Cost</div>
+                            <div class="value">$${cost.total_cost_usd.toLocaleString()}</div>
+                        </div>
+                        <div class="route-summary-item">
+                            <div class="label">Time</div>
+                            <div class="value">${(route.estimated_time_hours / 24).toFixed(1)}d</div>
+                        </div>
+                        <div class="route-summary-item">
+                            <div class="label">Safety</div>
+                            <div class="value">${risk.safety_score}/10</div>
+                        </div>
+                        <div class="route-summary-item">
+                            <div class="label">Confidence</div>
+                            <div class="value">${(data.confidence * 100).toFixed(0)}%</div>
+                        </div>
+                    </div>
+
+                    <div class="reasoning-compact">
+                        <strong>💬 Why This Route:</strong>
+                        ${data.reasoning.split('\n')[0]}${data.reasoning.split('\n').length > 1 ? '...' : ''}
+                    </div>
+                    
+                    <div class="route-details-toggle" id="route-toggle-${Date.now()}" onclick="toggleRouteDetails(this)">
+                        <span class="icon">▼</span>
+                        <span>View Full Details</span>
+                    </div>
+                    
+                    <div class="route-details-expanded" id="route-details-${Date.now()}">
+                        <!-- Route Sequence -->
+                        <div class="route-detail-section">
+                            <h4>📍 Route Sequence</h4>
+                            <div class="route-sequence">
+                                ${route.logistics_sequence.map((leg, idx) => {
+                                    const icons = {
+                                        'air': '✈️',
+                                        'sea': '🚢',
+                                        'truck': '🚚',
+                                        'rail': '🚂',
+                                        'warehouse': '📦'
+                                    };
+                                    const icon = icons[leg.type.toLowerCase()] || '📍';
+                                    return `
+                                        <div class="route-leg">
+                                            <div class="route-leg-icon">${icon}</div>
+                                            <div class="route-leg-info">
+                                                <div class="leg-title">${leg.type.toUpperCase()}: ${leg.from} → ${leg.to}</div>
+                                                <div class="leg-details">Distance: ${leg.distance_km}km | Time: ${leg.time_hours}hrs</div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                        
+                        <!-- Cost Breakdown -->
+                        <div class="route-detail-section">
+                            <h4>💰 Cost Breakdown</h4>
+                            <div class="cost-breakdown">
+                                ${cost.transportation_cost ? `
+                                    <div class="cost-item">
+                                        <div class="label">Transportation</div>
+                                        <div class="value">$${cost.transportation_cost.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                ${cost.customs_duties ? `
+                                    <div class="cost-item">
+                                        <div class="label">Customs & Duties</div>
+                                        <div class="value">$${cost.customs_duties.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                ${cost.insurance_cost ? `
+                                    <div class="cost-item">
+                                        <div class="label">Insurance</div>
+                                        <div class="value">$${cost.insurance_cost.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                ${cost.handling_fees ? `
+                                    <div class="cost-item">
+                                        <div class="label">Handling Fees</div>
+                                        <div class="value">$${cost.handling_fees.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                ${cost.fuel_surcharge ? `
+                                    <div class="cost-item">
+                                        <div class="label">Fuel Surcharge</div>
+                                        <div class="value">$${cost.fuel_surcharge.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                ${cost.other_costs ? `
+                                    <div class="cost-item">
+                                        <div class="label">Other Costs</div>
+                                        <div class="value">$${cost.other_costs.toLocaleString()}</div>
+                                    </div>
+                                ` : ''}
+                                <div class="cost-item" style="border-color: var(--success); background: rgba(16, 185, 129, 0.1);">
+                                    <div class="label">Total Cost</div>
+                                    <div class="value" style="color: var(--success);">$${cost.total_cost_usd.toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Risk Analysis -->
+                        <div class="route-detail-section">
+                            <h4>🛡️ Risk Analysis</h4>
+                            <div class="risk-details">
+                                <div class="risk-item">
+                                    <div class="label">Safety Score</div>
+                                    <div class="value score">${risk.safety_score}/10</div>
+                                </div>
+                                ${risk.delay_probability !== undefined ? `
+                                    <div class="risk-item">
+                                        <div class="label">Delay Probability</div>
+                                        <div class="value score">${(risk.delay_probability * 100).toFixed(1)}%</div>
+                                    </div>
+                                ` : ''}
+                                ${risk.damage_risk !== undefined ? `
+                                    <div class="risk-item">
+                                        <div class="label">Damage Risk</div>
+                                        <div class="value score">${(risk.damage_risk * 100).toFixed(1)}%</div>
+                                    </div>
+                                ` : ''}
+                                ${risk.customs_complexity ? `
+                                    <div class="risk-item">
+                                        <div class="label">Customs Complexity</div>
+                                        <div class="value">${risk.customs_complexity}</div>
+                                    </div>
+                                ` : ''}
+                                ${risk.weather_risk !== undefined ? `
+                                    <div class="risk-item">
+                                        <div class="label">Weather Risk</div>
+                                        <div class="value score">${(risk.weather_risk * 100).toFixed(1)}%</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            ${risk.risk_factors && risk.risk_factors.length > 0 ? `
+                                <div style="margin-top: var(--spacing-sm); padding: var(--spacing-sm); background: rgba(239, 68, 68, 0.05); border-radius: var(--radius-sm); border-left: 3px solid var(--error);">
+                                    <div style="font-size: 0.75em; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--spacing-xs);">Risk Factors</div>
+                                    <ul style="margin: 0; padding-left: var(--spacing-lg); font-size: 0.875em; color: var(--text-secondary);">
+                                        ${risk.risk_factors.map(factor => `<li>${factor}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <!-- Full Reasoning -->
+                        <div class="route-detail-section">
+                            <h4>💬 Full Reasoning</h4>
+                            <div class="full-reasoning">
+                                <strong>Why This Route Was Selected:</strong>
+                                ${data.reasoning.split('\n').map(line => line.trim()).filter(line => line).join('<br><br>')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (data.blockchainSignature) {
+                html += `
+                    <div class="blockchain-proof">
+                        <h4>⛓️ Blockchain Verification</h4>
+                        <p><strong>Status:</strong> Anchored on Solana Devnet</p>
+                        <p><strong>Signature:</strong> <code>${data.blockchainSignature}</code></p>
+                        <a href="${data.blockchainExplorer}" target="_blank" class="blockchain-link">
+                            View on Solana Explorer →
+                        </a>
+                    </div>
+                `;
+            }
+
+            // Priority Comparison Section
+            if (data.alternatives && data.alternatives.length > 0) {
+                // Create array with current recommended route
+                const allRoutes = [
+                    { route: route, cost: cost, risk: risk, isRecommended: true },
+                    ...data.alternatives.map(alt => ({ ...alt, isRecommended: false }))
+                ];
+                
+                // Find best route for each priority
+                const bestByCost = [...allRoutes].sort((a, b) => a.cost.total_cost_usd - b.cost.total_cost_usd)[0];
+                const bestByTime = [...allRoutes].sort((a, b) => a.route.estimated_time_hours - b.route.estimated_time_hours)[0];
+                const bestBySafety = [...allRoutes].sort((a, b) => b.risk.safety_score - a.risk.safety_score)[0];
+                
+                // Current recommended
+                const currentRecommended = {
+                    route: route,
+                    cost: cost,
+                    risk: risk
+                };
+                
+                html += `
+                    <div class="priority-comparison">
+                        <h3>📊 Priority Comparison</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9375em; margin-bottom: var(--spacing-lg);">
+                            See how different priorities would affect route selection:
+                        </p>
+                        <div class="priority-grid">
+                `;
+                
+                // Show all priorities with current selected highlighted
+                const priorities = [
+                    { key: 'balanced', label: '✅ Balanced', icon: '⚖️', route: currentRecommended, isSelected: selectedPriority === 'balanced' },
+                    { key: 'cost', label: '💰 Cost Optimized', icon: '💰', route: bestByCost, isSelected: selectedPriority === 'cost' },
+                    { key: 'time', label: '⏱️ Time Critical', icon: '⏱️', route: bestByTime, isSelected: selectedPriority === 'time' },
+                    { key: 'safety', label: '🛡️ Safety First', icon: '🛡️', route: bestBySafety, isSelected: selectedPriority === 'safety' }
+                ];
+                
+                priorities.forEach(priority => {
+                    if (!priority.route) return;
+                    
+                    const routeData = priority.route;
+                    const routeName = routeData.route ? routeData.route.route_name : routeData.route_name;
+                    const routeHours = routeData.route ? routeData.route.estimated_time_hours : routeData.estimated_time_hours;
+                    const routeCost = routeData.cost ? routeData.cost.total_cost_usd : routeData.total_cost_usd;
+                    const routeSafety = routeData.risk ? routeData.risk.safety_score : routeData.safety_score;
+                    
+                    const cardStyle = priority.isSelected 
+                        ? 'border-color: var(--success); background: rgba(16, 185, 129, 0.05);'
+                        : '';
+                    const labelText = priority.isSelected ? `${priority.label} (Selected)` : priority.label;
+                    
+                    html += `
+                        <div class="priority-card" style="${cardStyle}">
+                            <h4>${labelText}</h4>
+                            <div class="route-name">${routeName}</div>
+                            <div class="metrics">
+                                Cost: $${routeCost.toLocaleString()}<br>
+                                Time: ${(routeHours / 24).toFixed(1)} days<br>
+                                Safety: ${routeSafety}/10
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Alternative Routes (if any remaining)
+            if (data.alternatives && data.alternatives.length > 3) {
+                html += `
+                    <div class="alternatives-section">
+                        <h3>📋 Other Route Options</h3>
+                `;
+                data.alternatives.slice(3).forEach((alt, i) => {
+                    html += `
+                        <div class="alt-route">
+                            <h4>${i + 4}. ${alt.route.route_name}</h4>
+                            <p>Cost: $${alt.cost.total_cost_usd.toLocaleString()} | 
+                               Time: ${(alt.route.estimated_time_hours / 24).toFixed(1)} days | 
+                               Safety: ${alt.risk.safety_score}/10</p>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Toggle route details
+        function toggleRouteDetails(toggleElement) {
+            // Find the details element (next sibling)
+            const details = toggleElement.nextElementSibling;
+            
+            if (details && details.classList.contains('route-details-expanded')) {
+                details.classList.toggle('show');
+                toggleElement.classList.toggle('expanded');
+                
+                // Update text
+                const textSpan = toggleElement.querySelector('span:not(.icon)');
+                if (textSpan) {
+                    textSpan.textContent = details.classList.contains('show') 
+                        ? 'Hide Details' 
+                        : 'View Full Details';
+                }
+            }
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--border-subtle); padding: var(--spacing-2xl) 0; margin-top: var(--spacing-3xl); text-align: center; color: var(--text-tertiary);">
+        <div class="container">
+            <p>Built with 🦞 by LogerChain Team | <a href="/" style="color: var(--accent-primary); text-decoration: none;">Home</a> | <a href="/about.html" style="color: var(--accent-primary); text-decoration: none;">About</a> | <a href="/docs.html" style="color: var(--accent-primary); text-decoration: none;">Documentation</a></p>
+            <p style="margin-top: var(--spacing-sm); font-size: 0.875em;">© 2026 LogerClaw. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

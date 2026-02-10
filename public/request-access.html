@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Request access to LogerClaw AI tools for logistics optimization">
+    <title>Request Access - LogerClaw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #0f1420;
+            --bg-tertiary: #151b2b;
+            --bg-elevated: #1a1f2e;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #8b5cf6;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-default: rgba(255, 255, 255, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--spacing-md) 0;
+        }
+        
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .nav-logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            position: absolute;
+            left: var(--spacing-lg);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+            margin: 0 auto;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .page-header h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .page-header p {
+            font-size: 1.125em;
+            color: var(--text-secondary);
+        }
+        
+        /* Form Card */
+        .form-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            font-size: 1em;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        
+        input:hover, select:hover, textarea:hover {
+            border-color: var(--border-default);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+            background: var(--bg-tertiary);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            border: none;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: var(--shadow-md);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            display: none;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .success-message p {
+            color: var(--text-secondary);
+        }
+        
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            color: var(--error);
+            font-size: 0.875em;
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: var(--spacing-2xl) 0;
+            margin-top: var(--spacing-3xl);
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+        
+        footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2em;
+            }
+            
+            .form-card {
+                padding: var(--spacing-xl);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span>🦞</span>
+                <span>LogerClaw</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/agent.html">AI Agent</a></li>
+                <li><a href="/tools.html">Tools</a></li>
+                <li><a href="/request-access.html">Request Access</a></li>
+                <li><a href="/logerchain.html">LogerChain</a></li>
+                <li><a href="/docs.html">Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Request Access</h1>
+            <p>Get early access to LogerClaw AI tools for your logistics operations</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <form id="requestForm">
+                <div class="form-group">
+                    <label for="company">Company Name *</label>
+                    <input type="text" id="company" name="company" required placeholder="e.g., Acme Logistics">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Your Role *</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select your role</option>
+                        <option value="shipper">Shipper</option>
+                        <option value="forwarder">Forwarder</option>
+                        <option value="developer">Developer</option>
+                        <option value="protocol-builder">Protocol Builder</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="useCase">Use Case *</label>
+                    <textarea id="useCase" name="useCase" required placeholder="Describe how you plan to use LogerClaw tools..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="region">Region</label>
+                    <select id="region" name="region">
+                        <option value="">Select region</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe</option>
+                        <option value="americas">Americas</option>
+                        <option value="global">Global</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@company.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="telegram">Telegram (Optional)</label>
+                    <input type="text" id="telegram" name="telegram" placeholder="@username">
+                </div>
+
+                <div class="form-group">
+                    <label for="source">How did you hear about us? (Optional)</label>
+                    <input type="text" id="source" name="source" placeholder="e.g., Colosseum Hackathon, Twitter, etc.">
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Submit Request</button>
+                
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <h3>✅ Thank You!</h3>
+                <p>Your request has been submitted successfully. We'll review your application and contact you soon.</p>
+                <p style="margin-top: var(--spacing-md); color: var(--text-tertiary); font-size: 0.875em;">
+                    In the meantime, you can try our <a href="/agent.html" style="color: var(--accent-primary);">AI Agent Demo</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Built with 🦞 by LogerChain Team | <a href="/about.html">About</a> | <a href="/docs.html">Documentation</a></p>
+            <p style="margin-top: var(--spacing-sm); font-size: 0.875em;">© 2026 LogerClaw. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        document.getElementById('requestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Hide messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            // Prepare data
+            const formData = {
+                company: document.getElementById('company').value,
+                role: document.getElementById('role').value,
+                useCase: document.getElementById('useCase').value,
+                region: document.getElementById('region').value,
+                email: document.getElementById('email').value,
+                telegram: document.getElementById('telegram').value || undefined,
+                source: document.getElementById('source').value || undefined,
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/request-access`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show success
+                    successMessage.style.display = 'block';
+                    document.getElementById('requestForm').reset();
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    // Show error
+                    errorMessage.textContent = result.error || 'Failed to submit request. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Failed to connect to server. Please check your connection and try again.';
+                errorMessage.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Request';
+            }
+        });
+    </script>
+</body>
+</html>

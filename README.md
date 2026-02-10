@@ -378,6 +378,32 @@ server {
 
 ---
 
+## 🌐 Website Architecture
+
+LogerClaw website serves as an **AI-powered logistics intelligence layer** with 3 main functions:
+1. **🧠 Education & Information** - Clear value proposition for users
+2. **⚙️ Interface for AI Tools** - Demo & early access collection
+3. **🔌 Gateway to LogerChain** - Future infrastructure layer
+
+### Website Structure (7 Pages)
+
+- **`/`** - Landing Page (Hero, problem/solution, showcase)
+- **`/agent`** - AI Agent Demo (Current demo page)
+- **`/tools`** - Tools & Capabilities (5 AI tools showcase)
+- **`/request-access`** - Request Access Form (Lead collection)
+- **`/logerchain`** - LogerChain Protocol (Future infrastructure)
+- **`/docs`** - Documentation (Lightweight technical docs)
+- **`/about`** - About & Vision (Project context)
+
+**Documentation:**
+- 📐 [WEBSITE-ARCHITECTURE.md](./WEBSITE-ARCHITECTURE.md) - Complete architecture
+- 🗺️ [WEBSITE-ROADMAP.md](./WEBSITE-ROADMAP.md) - Implementation roadmap
+- 🚀 [WEBSITE-QUICK-START.md](./WEBSITE-QUICK-START.md) - Quick reference guide
+
+**Status:** Architecture defined, ready for implementation (2-5 days)
+
+---
+
 ## 🤝 Contributing
 
 LogerClaw is built for the [Colosseum Agent Hackathon](https://colosseum.com/agent-hackathon/). 
